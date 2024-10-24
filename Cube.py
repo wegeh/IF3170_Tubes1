@@ -32,9 +32,9 @@ class Cube:
         magic_number = self.magic_number
 
         # Menggunakan NumPy untuk menghitung total selisih lebih efisien
-        row_sums = np.sum(self.cube, axis=2)  # Jumlahkan sepanjang baris
-        col_sums = np.sum(self.cube, axis=1)  # Jumlahkan sepanjang kolom
-        pillar_sums = np.sum(self.cube, axis=0)  # Jumlahkan sepanjang tiang
+        row_sums = np.sum(self.cube, axis=2)  
+        col_sums = np.sum(self.cube, axis=1)  
+        pillar_sums = np.sum(self.cube, axis=0) 
 
         # Total perbedaan untuk baris, kolom, dan tiang
         total_diff = np.sum(np.abs(row_sums - magic_number))
@@ -65,13 +65,11 @@ class Cube:
     def generate_all_successors(self):
         
         indices = [(i, j, k) for i in range(self.size) for j in range(self.size) for k in range(self.size)]
-        index_pairs = itertools.combinations(indices, 2)  # Kombinasi dari dua indeks untuk swap
+        index_pairs = itertools.combinations(indices, 2)  
 
         for idx1, idx2 in index_pairs:
-            # Lakukan swap inplace
             self.swap(idx1, idx2)
-            yield self  # Kembalikan cube saat ini setelah swap
-            # Batalkan swap untuk mengembalikan cube ke kondisi semula
+            yield self  
             self.swap(idx1, idx2)
 
     def generate_random_successor(self):
@@ -80,8 +78,8 @@ class Cube:
         idx1, idx2 = random.sample(indices, 2)
 
         self.swap(idx1, idx2)
-        successor = copy.deepcopy(self)  # Salin objek successor untuk dikembalikan
-        self.swap(idx1, idx2)  # Batalkan swap untuk mengembalikan ke kondisi semula
+        successor = copy.deepcopy(self) 
+        self.swap(idx1, idx2)
 
         return successor
 
@@ -93,7 +91,7 @@ class Cube:
         for successor in self.generate_all_successors():
             score = successor.evaluate_objective_function()
             if score < best_score:
-                best_cube = copy.deepcopy(successor)  # Simpan salinan cube terbaik
+                best_cube = copy.deepcopy(successor)  
                 best_score = score
 
         return best_cube
