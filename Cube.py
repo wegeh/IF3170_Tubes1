@@ -350,3 +350,11 @@ class Cube:
         
         return self.generate_random_successor()
 
+    def to_flat_list(self):
+        return self.cube.flatten().tolist()
+    
+    def from_flat_list(flat_list):
+        size = int(round(len(flat_list) ** (1/3)))
+        cube = Cube(size)
+        cube.cube = np.array(flat_list).reshape((size, size, size))
+        return cube
