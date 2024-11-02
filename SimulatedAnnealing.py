@@ -44,11 +44,10 @@ class SimulatedAnnealing(BaseLocalSearchAlgorithm):
                 probability = math.exp(-delta_e / self.temperature)
                 self.probability_values.append(probability)
                 # print(probability)
+                self.stuck_frequency += 1
                 if random.uniform(0, 1) < probability:
                     self.cube = successor
                     self.current_score = successor_value
-                else:
-                    self.stuck_frequency += 1
 
 
             if self.iteration_count % 500 == 0:
