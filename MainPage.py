@@ -13,15 +13,15 @@ class MainPage(ttk.Frame):
                                command=lambda: controller.show_frame("SteepestAscentHCPage"))
         sahc_button.pack(pady=10)
         
-        rrhc_button = tk.Button(self, text="Random Restart Hill Climbing Algorithm",
+        rrhc_button = ttk.Button(self, text="Random Restart Hill Climbing Algorithm",
                                 command=lambda: controller.show_frame("RandomRestartHCPage"))
         rrhc_button.pack(pady=10)
         
-        stochastic_button = tk.Button(self, text="Stochastic Hill Climbing Algorithm",
+        stochastic_button = ttk.Button(self, text="Stochastic Hill Climbing Algorithm",
                                 command=lambda: controller.show_frame("StochasticHCPage"))
         stochastic_button.pack(pady=10)
         
-        sideways_move_button = tk.Button(self, text="Hill Climbing With Sideways Move Algorithm",
+        sideways_move_button = ttk.Button(self, text="Hill Climbing With Sideways Move Algorithm",
                                 command=lambda: controller.show_frame("SidewaysMoveHCPage"))
         sideways_move_button.pack(pady=10)
 

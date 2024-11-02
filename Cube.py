@@ -15,8 +15,7 @@ class Cube:
         self.pillar_sums = np.zeros((n, n), dtype=int)  
         self.main_diag_sums = np.zeros(4, dtype=int) 
         self.plane_diag_sums = np.zeros(12, dtype=int) 
-    def __str__(self):
-        return f"Cube of size {self.size}x{self.size}\n" + "\n".join([str(row) for row in self.cube])
+    
 
     def generate_cube(self):
         numbers = np.arange(1, self.size ** 3 + 1)
@@ -24,34 +23,6 @@ class Cube:
         self.cube = numbers.reshape((self.size, self.size, self.size))
         self.initialize_sums()
 
-    def display_cube(self):
-        for layer in self.cube:
-            print(layer)
-            print() 
-            
-    def initialize_sums(self):
-        n = self.size
-        self.row_sums = np.sum(self.cube, axis=2)
-        self.col_sums = np.sum(self.cube, axis=1)
-        self.pillar_sums = np.sum(self.cube, axis=0)
-
-        self.main_diag_sums[0] = np.sum([self.cube[i, i, i] for i in range(n)])
-        self.main_diag_sums[1] = np.sum([self.cube[i, i, n-1-i] for i in range(n)])
-        self.main_diag_sums[2] = np.sum([self.cube[i, n-1-i, i] for i in range(n)])
-        self.main_diag_sums[3] = np.sum([self.cube[i, n-1-i, n-1-i] for i in range(n)])
-
-        self.plane_diag_sums[0] = np.sum([self.cube[i, i, 0] for i in range(n)])
-        self.plane_diag_sums[1] = np.sum([self.cube[i, n-1-i, 0] for i in range(n)])
-        self.plane_diag_sums[2] = np.sum([self.cube[i, i, n-1] for i in range(n)]) #tt
-        self.plane_diag_sums[3] = np.sum([self.cube[i, n-1-i, n-1] for i in range(n)])
-        self.plane_diag_sums[4] = np.sum([self.cube[i, 0, i] for i in range(n)])
-        self.plane_diag_sums[5] = np.sum([self.cube[i, 0, n-1-i] for i in range(n)])
-        self.plane_diag_sums[6] = np.sum([self.cube[i, n-1, i] for i in range(n)])
-        self.plane_diag_sums[7] = np.sum([self.cube[i, n-1, n-1-i] for i in range(n)])
-        self.plane_diag_sums[8] = np.sum([self.cube[0, i, i] for i in range(n)])
-        self.plane_diag_sums[9] = np.sum([self.cube[0, i, n-1-i] for i in range(n)]) #tt
-        self.plane_diag_sums[10] = np.sum([self.cube[n-1, i, i] for i in range(n)])
-        self.plane_diag_sums[11] = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])
 
     def swap(self, idx1, idx2):
         i1, j1, k1 = idx1
@@ -59,17 +30,123 @@ class Cube:
     
         self.cube[i1, j1, k1], self.cube[i2, j2, k2] = self.cube[i2, j2, k2], self.cube[i1, j1, k1]
         
-    def evaluate_objective_function2(self):
+    
+    
+    def evaluate_objective_function(self):
+        n = self.size
         magic_number = self.magic_number
-        total_diff = 0
+
+        row_sums = np.sum(self.cube, axis=2)  
+        col_sums = np.sum(self.cube, axis=1)  
+        pillar_sums = np.sum(self.cube, axis=0)  
+        # print("row: ", row_sums)
+        # print("col: ", col_sums)
+        # print("pillar: ", pillar_sums)
+        # print()
+
+        total_diff = np.sum(np.abs(row_sums - magic_number))
+        total_diff += np.sum(np.abs(col_sums - magic_number))
+        total_diff += np.sum(np.abs(pillar_sums - magic_number))
+    
+        main_diag_1 = np.sum([self.cube[i, i, i] for i in range(n)])  
+        main_diag_2 = np.sum([self.cube[i, i, n-1-i] for i in range(n)])  
+        main_diag_3 = np.sum([self.cube[i, n-1-i, i] for i in range(n)])  
+        main_diag_4 = np.sum([self.cube[i, n-1-i, n-1-i] for i in range(n)]) 
+        # print("diagonal", main_diag_1, main_diag_2, main_diag_3, main_diag_4)
+        # print()
         
-        total_diff += np.sum(np.abs(self.row_sums - magic_number))
-        total_diff += np.sum(np.abs(self.col_sums - magic_number))
-        total_diff += np.sum(np.abs(self.pillar_sums - magic_number))
-        total_diff += np.sum(np.abs(self.main_diag_sums - magic_number))
-        total_diff += np.sum(np.abs(self.plane_diag_sums - magic_number))
+
+        total_diff += np.abs(main_diag_1 - magic_number)
+        total_diff += np.abs(main_diag_2 - magic_number)
+        total_diff += np.abs(main_diag_3 - magic_number)
+        total_diff += np.abs(main_diag_4 - magic_number)
         
+
+        plane_diag_1 = np.sum([self.cube[i, i, 0] for i in range(n)])  
+        plane_diag_2 = np.sum([self.cube[i, n-1-i, 0] for i in range(n)])  
+        plane_diag_3 = np.sum([self.cube[i, i, n-1] for i in range(n)]) #tt
+        plane_diag_4 = np.sum([self.cube[i, n-1-i, n-1] for i in range(n)])  
+        
+        plane_diag_5 = np.sum([self.cube[i, 0, i] for i in range(n)])  
+        plane_diag_6 = np.sum([self.cube[i, 0, n-1-i] for i in range(n)])  
+        plane_diag_7 = np.sum([self.cube[i, n-1, i] for i in range(n)])  
+        plane_diag_8 = np.sum([self.cube[i, n-1, n-1-i] for i in range(n)])  
+        
+        plane_diag_9 = np.sum([self.cube[0, i, i] for i in range(n)])  
+        plane_diag_10 = np.sum([self.cube[0, i, n-1-i] for i in range(n)])  #tt
+        plane_diag_11 = np.sum([self.cube[n-1, i, i] for i in range(n)])  
+        plane_diag_12 = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])  
+        
+        # print(f"XY-plane diagonals: {plane_diag_1}, {plane_diag_2}, {plane_diag_3}, {plane_diag_4}")
+        # print(f"XZ-plane diagonals: {plane_diag_5}, {plane_diag_6}, {plane_diag_7}, {plane_diag_8}")
+        # print(f"YZ-plane diagonals: {plane_diag_9}, {plane_diag_10}, {plane_diag_11}, {plane_diag_12}")
+        
+        total_diff += np.abs(plane_diag_1 - magic_number)
+        total_diff += np.abs(plane_diag_2 - magic_number)
+        total_diff += np.abs(plane_diag_3 - magic_number)
+        total_diff += np.abs(plane_diag_4 - magic_number)
+        total_diff += np.abs(plane_diag_5 - magic_number)
+        total_diff += np.abs(plane_diag_6 - magic_number)
+        total_diff += np.abs(plane_diag_7 - magic_number)
+        total_diff += np.abs(plane_diag_8 - magic_number)
+        total_diff += np.abs(plane_diag_9 - magic_number)
+        total_diff += np.abs(plane_diag_10 - magic_number)
+        total_diff += np.abs(plane_diag_11 - magic_number)
+        total_diff += np.abs(plane_diag_12 - magic_number)
+
         return total_diff
+
+    def generate_all_successors(self):
+        
+        indices = [(i, j, k) for i in range(self.size) for j in range(self.size) for k in range(self.size)]
+        index_pairs = itertools.combinations(indices, 2)  
+
+        for idx1, idx2 in index_pairs:
+            # print("================0")
+            # self.swap_and_update(idx1, idx2)
+            self.swap(idx1, idx2)
+            # print("r",self.row_sums)
+            # print("c",self.col_sums)
+            # print("p",self.pillar_sums)
+            # print("md",self.main_diag_sums)
+            # print("pd",self.plane_diag_sums)
+            # print("================1")
+            yield self  
+            # print("================2")
+            # self.swap_and_update(idx1, idx2)
+            self.swap(idx1, idx2)
+    
+
+    def generate_random_successor(self):
+        
+        indices = [(i, j, k) for i in range(self.size) for j in range(self.size) for k in range(self.size)]
+        idx1, idx2 = random.sample(indices, 2)
+
+        self.swap(idx1, idx2)
+        successor = copy.deepcopy(self)  
+        self.swap(idx1, idx2)  
+
+        return successor
+
+    def get_best_successor(self) -> 'Cube':
+        
+        best_cube = None
+        best_score = float('inf')
+
+        for successor in self.generate_all_successors():
+            score = successor.evaluate_objective_function()
+            # score3 = successor.evaluate_objective_function3()
+            # print("score1: ", score)
+            # print("score3: ", score3)
+            if score < best_score:
+                best_cube = copy.deepcopy(successor) 
+                best_score = score
+
+        return best_cube
+    
+    def get_random_successor(self):
+        
+        return self.generate_random_successor()
     
     def update_sums_after_swap(self, idx1, idx2):
         i1, j1, k1 = idx1
@@ -232,121 +309,50 @@ class Cube:
             total_diff += sum(np.abs(results[i] - magic_number) for i in range(3, 7))
             total_diff += sum(np.abs(results[i] - magic_number) for i in range(7, len(results)))
 
-        return total_diff    
+        return total_diff   
     
-    def evaluate_objective_function(self):
-        n = self.size
+    def evaluate_objective_function2(self):
         magic_number = self.magic_number
-
-        row_sums = np.sum(self.cube, axis=2)  
-        col_sums = np.sum(self.cube, axis=1)  
-        pillar_sums = np.sum(self.cube, axis=0)  
-        # print("row: ", row_sums)
-        # print("col: ", col_sums)
-        # print("pillar: ", pillar_sums)
-        # print()
-
-        total_diff = np.sum(np.abs(row_sums - magic_number))
-        total_diff += np.sum(np.abs(col_sums - magic_number))
-        total_diff += np.sum(np.abs(pillar_sums - magic_number))
-    
-        main_diag_1 = np.sum([self.cube[i, i, i] for i in range(n)])  
-        main_diag_2 = np.sum([self.cube[i, i, n-1-i] for i in range(n)])  
-        main_diag_3 = np.sum([self.cube[i, n-1-i, i] for i in range(n)])  
-        main_diag_4 = np.sum([self.cube[i, n-1-i, n-1-i] for i in range(n)]) 
-        # print("diagonal", main_diag_1, main_diag_2, main_diag_3, main_diag_4)
-        # print()
+        total_diff = 0
         
-
-        total_diff += np.abs(main_diag_1 - magic_number)
-        total_diff += np.abs(main_diag_2 - magic_number)
-        total_diff += np.abs(main_diag_3 - magic_number)
-        total_diff += np.abs(main_diag_4 - magic_number)
+        total_diff += np.sum(np.abs(self.row_sums - magic_number))
+        total_diff += np.sum(np.abs(self.col_sums - magic_number))
+        total_diff += np.sum(np.abs(self.pillar_sums - magic_number))
+        total_diff += np.sum(np.abs(self.main_diag_sums - magic_number))
+        total_diff += np.sum(np.abs(self.plane_diag_sums - magic_number))
         
-
-        plane_diag_1 = np.sum([self.cube[i, i, 0] for i in range(n)])  
-        plane_diag_2 = np.sum([self.cube[i, n-1-i, 0] for i in range(n)])  
-        plane_diag_3 = np.sum([self.cube[i, i, n-1] for i in range(n)]) #tt
-        plane_diag_4 = np.sum([self.cube[i, n-1-i, n-1] for i in range(n)])  
-        
-        plane_diag_5 = np.sum([self.cube[i, 0, i] for i in range(n)])  
-        plane_diag_6 = np.sum([self.cube[i, 0, n-1-i] for i in range(n)])  
-        plane_diag_7 = np.sum([self.cube[i, n-1, i] for i in range(n)])  
-        plane_diag_8 = np.sum([self.cube[i, n-1, n-1-i] for i in range(n)])  
-        
-        plane_diag_9 = np.sum([self.cube[0, i, i] for i in range(n)])  
-        plane_diag_10 = np.sum([self.cube[0, i, n-1-i] for i in range(n)])  #tt
-        plane_diag_11 = np.sum([self.cube[n-1, i, i] for i in range(n)])  
-        plane_diag_12 = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])  
-        
-        # print(f"XY-plane diagonals: {plane_diag_1}, {plane_diag_2}, {plane_diag_3}, {plane_diag_4}")
-        # print(f"XZ-plane diagonals: {plane_diag_5}, {plane_diag_6}, {plane_diag_7}, {plane_diag_8}")
-        # print(f"YZ-plane diagonals: {plane_diag_9}, {plane_diag_10}, {plane_diag_11}, {plane_diag_12}")
-        
-        total_diff += np.abs(plane_diag_1 - magic_number)
-        total_diff += np.abs(plane_diag_2 - magic_number)
-        total_diff += np.abs(plane_diag_3 - magic_number)
-        total_diff += np.abs(plane_diag_4 - magic_number)
-        total_diff += np.abs(plane_diag_5 - magic_number)
-        total_diff += np.abs(plane_diag_6 - magic_number)
-        total_diff += np.abs(plane_diag_7 - magic_number)
-        total_diff += np.abs(plane_diag_8 - magic_number)
-        total_diff += np.abs(plane_diag_9 - magic_number)
-        total_diff += np.abs(plane_diag_10 - magic_number)
-        total_diff += np.abs(plane_diag_11 - magic_number)
-        total_diff += np.abs(plane_diag_12 - magic_number)
-
         return total_diff
-
-    def generate_all_successors(self):
-        
-        indices = [(i, j, k) for i in range(self.size) for j in range(self.size) for k in range(self.size)]
-        index_pairs = itertools.combinations(indices, 2)  
-
-        for idx1, idx2 in index_pairs:
-            # print("================0")
-            # self.swap_and_update(idx1, idx2)
-            self.swap(idx1, idx2)
-            # print("r",self.row_sums)
-            # print("c",self.col_sums)
-            # print("p",self.pillar_sums)
-            # print("md",self.main_diag_sums)
-            # print("pd",self.plane_diag_sums)
-            # print("================1")
-            yield self  
-            # print("================2")
-            # self.swap_and_update(idx1, idx2)
-            self.swap(idx1, idx2)
     
-
-    def generate_random_successor(self):
-        
-        indices = [(i, j, k) for i in range(self.size) for j in range(self.size) for k in range(self.size)]
-        idx1, idx2 = random.sample(indices, 2)
-
-        self.swap(idx1, idx2)
-        successor = copy.deepcopy(self)  
-        self.swap(idx1, idx2)  
-
-        return successor
-
-    def get_best_successor(self) -> 'Cube':
-        
-        best_cube = None
-        best_score = float('inf')
-
-        for successor in self.generate_all_successors():
-            score = successor.evaluate_objective_function()
-            # score3 = successor.evaluate_objective_function3()
-            # print("score1: ", score)
-            # print("score3: ", score3)
-            if score < best_score:
-                best_cube = copy.deepcopy(successor) 
-                best_score = score
-
-        return best_cube
+    def __str__(self):
+        return f"Cube of size {self.size}x{self.size}\n" + "\n".join([str(row) for row in self.cube])
     
-    def get_random_successor(self):
-        
-        return self.generate_random_successor()
+    
+    def display_cube(self):
+        for layer in self.cube:
+            print(layer)
+            print() 
+            
+    def initialize_sums(self):
+        n = self.size
+        self.row_sums = np.sum(self.cube, axis=2)
+        self.col_sums = np.sum(self.cube, axis=1)
+        self.pillar_sums = np.sum(self.cube, axis=0)
+
+        self.main_diag_sums[0] = np.sum([self.cube[i, i, i] for i in range(n)])
+        self.main_diag_sums[1] = np.sum([self.cube[i, i, n-1-i] for i in range(n)])
+        self.main_diag_sums[2] = np.sum([self.cube[i, n-1-i, i] for i in range(n)])
+        self.main_diag_sums[3] = np.sum([self.cube[i, n-1-i, n-1-i] for i in range(n)])
+
+        self.plane_diag_sums[0] = np.sum([self.cube[i, i, 0] for i in range(n)])
+        self.plane_diag_sums[1] = np.sum([self.cube[i, n-1-i, 0] for i in range(n)])
+        self.plane_diag_sums[2] = np.sum([self.cube[i, i, n-1] for i in range(n)]) #tt
+        self.plane_diag_sums[3] = np.sum([self.cube[i, n-1-i, n-1] for i in range(n)])
+        self.plane_diag_sums[4] = np.sum([self.cube[i, 0, i] for i in range(n)])
+        self.plane_diag_sums[5] = np.sum([self.cube[i, 0, n-1-i] for i in range(n)])
+        self.plane_diag_sums[6] = np.sum([self.cube[i, n-1, i] for i in range(n)])
+        self.plane_diag_sums[7] = np.sum([self.cube[i, n-1, n-1-i] for i in range(n)])
+        self.plane_diag_sums[8] = np.sum([self.cube[0, i, i] for i in range(n)])
+        self.plane_diag_sums[9] = np.sum([self.cube[0, i, n-1-i] for i in range(n)]) #tt
+        self.plane_diag_sums[10] = np.sum([self.cube[n-1, i, i] for i in range(n)])
+        self.plane_diag_sums[11] = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])
 
