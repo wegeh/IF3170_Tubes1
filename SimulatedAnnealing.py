@@ -36,7 +36,7 @@ class SimulatedAnnealing(BaseLocalSearchAlgorithm):
 
             delta_e = successor_value - self.current_score
 
-            if delta_e <= 0:
+            if delta_e < 0:
                 self.cube = successor
                 self.current_score = successor_value
                 self.probability_values.append(1)
