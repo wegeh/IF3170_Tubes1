@@ -10,6 +10,7 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
         super().__init__(cube)
         self.iteration_count = 0
         self.objective_values = []
+        self.avg_objective_values = []
         self.time_exec = 0
         self.population_size = population_size
         self.max_iterations = max_iterations
@@ -27,9 +28,13 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
         return population
 
     def select_parents(self, population):
-        total_fitness = np.sum([self.fitness_function(individu)[0] for individu in population])
-        selection_probabilities = [self.fitness_function(individu)[0] / total_fitness for individu in population]
-        parents = random.choices(population, weights=selection_probabilities, k=2) 
+        fitness_values = [self.fitness_function(individu)[0] for individu in population]
+
+        total_fitness = np.sum(fitness_values)
+
+        selection_probabilities = [fitness / total_fitness for fitness in fitness_values]
+
+        parents = random.choices(population, weights=selection_probabilities, k=2)
         return parents
 
     def order_crossover(self, parent1, parent2):
@@ -69,10 +74,16 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
     def run(self):
         start_time = time.time()
         population = self.initialize_population()
-        current_best = max(population, key=self.fitness_function)
-        (current_best_fitness, current_best_objective) = self.fitness_function(current_best)
-        self.objective_values.append(current_best_objective)
-        initial_state = current_best
+        fitness_objective_values = [(individual, self.fitness_function(individual)) for individual in population]
+
+        curr_best_individual, (curr_best_fitness, curr_best_objective) = max(fitness_objective_values, key=lambda x: x[1][0])
+        self.objective_values.append(curr_best_objective)
+        best_individual = curr_best_individual
+        best_fitness = curr_best_fitness
+        obj_val = curr_best_objective
+        avg_objective_value = sum(obj_val[1] for _, obj_val in fitness_objective_values) / len(population)
+        self.avg_objective_values.append(avg_objective_value)
+        initial_state = copy.deepcopy(best_individual)
         
 
         for iteration in range(self.max_iterations):
@@ -85,14 +96,16 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
 
             population = new_population
 
-            current_best = max(population, key=self.fitness_function)
-            (current_best_fitness, current_best_objective) = self.fitness_function(current_best)
-            self.objective_values.append(current_best_objective)
+            fitness_objective_values = [(individual, self.fitness_function(individual)) for individual in population]
 
-            best_individual = current_best
-            best_fitness = current_best_fitness
-            obj_val = current_best_objective
-                
+            curr_best_individual, (curr_best_fitness, curr_best_objective) = max(fitness_objective_values, key=lambda x: x[1][0])
+            self.objective_values.append(curr_best_objective)
+            best_individual = curr_best_individual
+            best_fitness = curr_best_fitness
+            obj_val = curr_best_objective
+
+            avg_objective_value = sum(obj_val[1] for _, obj_val in fitness_objective_values) / len(population)
+            self.avg_objective_values.append(avg_objective_value)
 
             if iteration % 1 == 0:  
                 print(f"Iteration {iteration}: Best Objective Value = {obj_val}")
@@ -107,5 +120,6 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
             "final_fitness": best_fitness,
             "iterations": self.max_iterations,
             "duration": self.time_exec,
-            "objective_progress": self.objective_values
+            "objective_progress": self.objective_values,
+            "avg_objective_progress": self.avg_objective_values
         }

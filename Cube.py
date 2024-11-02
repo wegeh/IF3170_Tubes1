@@ -93,6 +93,8 @@ class Cube:
         total_diff += np.abs(plane_diag_10 - magic_number)
         total_diff += np.abs(plane_diag_11 - magic_number)
         total_diff += np.abs(plane_diag_12 - magic_number)
+        
+        print("tes")
 
         return total_diff
 
@@ -147,6 +149,15 @@ class Cube:
     def get_random_successor(self):
         
         return self.generate_random_successor()
+    
+    def to_flat_list(self):
+        return self.cube.flatten().tolist()
+    
+    def from_flat_list(flat_list):
+        size = int(round(len(flat_list) ** (1/3)))
+        cube = Cube(size)
+        cube.cube = np.array(flat_list).reshape((size, size, size))
+        return cube
     
     def update_sums_after_swap(self, idx1, idx2):
         i1, j1, k1 = idx1
@@ -356,11 +367,4 @@ class Cube:
         self.plane_diag_sums[10] = np.sum([self.cube[n-1, i, i] for i in range(n)])
         self.plane_diag_sums[11] = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])
 
-    def to_flat_list(self):
-        return self.cube.flatten().tolist()
     
-    def from_flat_list(flat_list):
-        size = int(round(len(flat_list) ** (1/3)))
-        cube = Cube(size)
-        cube.cube = np.array(flat_list).reshape((size, size, size))
-        return cube
