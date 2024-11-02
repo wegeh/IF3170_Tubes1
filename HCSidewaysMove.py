@@ -24,11 +24,11 @@ class HCSidewaysMove(BaseLocalSearchAlgorithm):
             successor = self.cube.get_best_successor()
         
             successor_value = successor.evaluate_objective_function()
+            self.objective_values.append(successor_value)     
             
             if (successor_value < self.current_score):
                 self.cube = successor
                 self.current_score = successor_value
-                self.objective_values.append(successor_value)     
             elif (successor_value == self.current_score):
                 if self.sideways_count >= self.max_sideways:
                     end_time = time.time()
@@ -36,7 +36,6 @@ class HCSidewaysMove(BaseLocalSearchAlgorithm):
                     break
                 self.sideways_count += 1
                 self.cube = successor
-                self.objective_values.append(successor_value)
             
             else:
                 end_time = time.time()
