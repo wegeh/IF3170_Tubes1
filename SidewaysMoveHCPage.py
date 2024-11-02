@@ -7,6 +7,7 @@ from queue import Queue
 import matplotlib.pyplot as plt
 from CubeVisualizerVTK import CubeVisualizerVTK
 from multiprocessing import Process
+from HCSidewaysMove import HCSidewaysMove
 
 class SidewaysMoveHCPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -96,9 +97,9 @@ class SidewaysMoveHCPage(ttk.Frame):
 
     def run_algorithm(self, max_sideways, result_queue):
         cube = Cube(5)
-        # algorithm = RandomRestartHC(cube, max_sideways, stop_event=self.stop_event)
-        # result = algorithm.run()
-        # result_queue.put(result)
+        algorithm = HCSidewaysMove(cube, max_sideways, stop_event=self.stop_event)
+        result = algorithm.run()
+        result_queue.put(result)
 
     def check_queue(self):
         try:
