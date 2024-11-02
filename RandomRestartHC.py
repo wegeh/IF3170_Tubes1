@@ -4,10 +4,10 @@ from Cube import Cube
 import copy 
 
 class RandomRestartHC(BaseLocalSearchAlgorithm):
-    def __init__(self, cube: Cube, max_restarts: int = 100, no_improvement_restarts: int = 10):
+    def __init__(self, cube: Cube, max_restarts: int = 100):
         super().__init__(cube)
         self.max_restarts = max_restarts
-        self.no_improvement_restarts = no_improvement_restarts
+        # self.no_improvement_restarts = no_improvement_restarts
         self.stagnant_restarts = 0
         self.iteration_count = 0
         self.iteration_per_restart = []
@@ -21,9 +21,9 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
         start_time = time.time()
 
         while self.total_restarts < self.max_restarts:
-            if self.stagnant_restarts >= self.no_improvement_restarts:
-                print("Stopped due to no improvement in the last", self.no_improvement_restarts, "restarts.")
-                break;
+            # if self.stagnant_restarts >= self.no_improvement_restarts:
+                
+            #     break;
 
             self.total_restarts += 1
             self.iteration_count = 0
@@ -38,23 +38,22 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
                 successor = self.cube.get_best_successor()
             
                 successor_value = successor.evaluate_objective_function()
+                self.objective_values.append(successor_value)     
                 
                 if (successor_value < self.current_score):
                     self.cube = successor
                     self.current_score = successor_value
-                    self.objective_values.append(successor_value)     
                 else:
                     self.iteration_per_restart.append(self.iteration_count)
-                    end_restart = time.time() - prev                        
+                                           
                     if self.current_score < self.best_score:
                         self.best_score = self.current_score
                         self.best_state = copy.deepcopy(self.cube)
-                        self.stagnant_restarts = 0 
-                    else:
-                        self.stagnant_restarts += 1
+                    #     self.stagnant_restarts = 0 
+                    # else:
+                    #     self.stagnant_restarts += 1
                     print("restart: ", self.total_restarts)
                     print(self.iteration_per_restart)
-                    print(end_restart)
                     print(self.best_score)
                     print()
                     break;
@@ -80,10 +79,3 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
             "objective_progress": self.objective_values,
         }
         
-if __name__ == "__main__":
-    cube = Cube(5)
-    max_restarts = 100
-
-    random_restart_hc = RandomRestartHC(cube, max_restarts=max_restarts)
-    results = random_restart_hc.run()
-    print(results)

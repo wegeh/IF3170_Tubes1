@@ -7,6 +7,7 @@ from queue import Queue
 import matplotlib.pyplot as plt
 from CubeVisualizerVTK import CubeVisualizerVTK
 from multiprocessing import Process
+from RandomRestartHC import RandomRestartHC
 
 class RandomRestartHCPage(ttk.Frame):
     def __init__(self, parent, controller):
@@ -96,9 +97,9 @@ class RandomRestartHCPage(ttk.Frame):
 
     def run_algorithm(self, max_restart, result_queue):
         cube = Cube(5)
-        # algorithm = RandomRestartHC(cube, max_restart, stop_event=self.stop_event)
-        # result = algorithm.run()
-        # result_queue.put(result)
+        algorithm = RandomRestartHC(cube, max_restart)
+        result = algorithm.run()
+        result_queue.put(result)
 
     def check_queue(self):
         try:
@@ -117,10 +118,14 @@ class RandomRestartHCPage(ttk.Frame):
 
             result_str = (
                 f"Final Objective Value: {result['final_objective']}\n"
-                f"Many Restart: {result['']}\n"
-                f"Many Iteration/Restart : {result['']}\n"
+                f"Many Restart: {result['total restart']}\n"
                 f"Execution Time: {result['duration']:.2f} seconds\n"
+                f"Iterations per Restart:\n"
             )
+            
+            for i, iteration in enumerate(result['iteration per restart']):
+                result_str += f"  Restart {i + 1}: {iteration} iterations\n"
+                
             self.result_text.delete(1.0, tk.END)
             
             self.result_text.insert(tk.END, result_str)
