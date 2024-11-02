@@ -10,7 +10,7 @@ class MainPage(ttk.Frame):
         label.pack(pady=20)
 
         sahc_button = ttk.Button(self, text="Steepest Ascent Algorithm",
-                               command=lambda: controller.show_frame("SteepestAscentPage"))
+                               command=lambda: controller.show_frame("SteepestAscentHCPage"))
         sahc_button.pack(pady=10)
         
         rrhc_button = tk.Button(self, text="Random Restart Hill Climbing Algorithm",
