@@ -1,17 +1,8 @@
-from Cube import Cube
-from CubeVisualizerApp import CubeVisualizerApp
-from SteepestAscentHC import SteepestAscentHC
+
+from MainApp import MainApp
 
 if __name__ == "__main__":
-    cube = Cube(5)
-    
-    
-    algorithm = SteepestAscentHC(cube)
-    
-    res = algorithm.run()
-    
-    print(res)
-    
-    
-
-    # app = CubeVisualizerApp(cube, algorithm)
+    from multiprocessing import freeze_support
+    freeze_support()
+    app = MainApp()
+    app.mainloop()

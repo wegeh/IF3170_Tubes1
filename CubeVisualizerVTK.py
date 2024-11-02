@@ -65,16 +65,16 @@ class CubeVisualizerVTK:
             for j in range(n):
                 for k in range(n):
                     value = str(layer[j, k])
-                    cube_position = (k * self.grid_spacing, -i * self.layer_spacing, -j * self.grid_spacing)
+                    cube_position = (k * self.grid_spacing, -i * self.layer_spacing, j * self.grid_spacing)
 
                     self.renderer.AddActor(self.create_cube_actor(cube_position))
 
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing + self.cube_size / 2 + 20, -j * self.grid_spacing), (-90, 0, 0)))
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing - self.cube_size / 2 - 20, -j * self.grid_spacing), (90, 0, 0)))
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing, -j * self.grid_spacing - self.cube_size / 2 - 20), (0, 180, 0)))
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing, -j * self.grid_spacing + self.cube_size / 2 + 20), (0, 0, 0)))
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing - self.cube_size / 2 - 20, -i * self.layer_spacing, -j * self.grid_spacing), (0, -90, 0)))
-                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing + self.cube_size / 2 + 20, -i * self.layer_spacing, -j * self.grid_spacing), (0, 90, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing + self.cube_size / 2 + 20, j * self.grid_spacing), (-90, 0, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing - self.cube_size / 2 - 20, j * self.grid_spacing), (90, 0, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing, j * self.grid_spacing - self.cube_size / 2 - 20), (0, 180, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing, -i * self.layer_spacing, j * self.grid_spacing + self.cube_size / 2 + 20), (0, 0, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing - self.cube_size / 2 - 20, -i * self.layer_spacing, j * self.grid_spacing), (0, -90, 0)))
+                    self.renderer.AddActor(self.create_text_actor(value, (k * self.grid_spacing + self.cube_size / 2 + 20, -i * self.layer_spacing, j * self.grid_spacing), (0, 90, 0)))
 
         self.render_window.Render()
 
@@ -101,6 +101,6 @@ class CubeVisualizerVTK:
         elif key == "Down":
             zoom_out()
 
-    def on_exit(self):
+    def on_exit(self, *args):
         self.render_window.Finalize()
         self.render_window_interactor.TerminateApp()

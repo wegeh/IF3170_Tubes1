@@ -43,6 +43,8 @@ class SteepestAscentHC(BaseLocalSearchAlgorithm):
                 prev = time.time()
                 print()
                 print()
+                
+        self.initial_state.display_cube()
         
         return {
             "initial_state": self.initial_state,
@@ -51,6 +53,7 @@ class SteepestAscentHC(BaseLocalSearchAlgorithm):
             "iterations": self.iteration_count,
             "duration": self.time_exec,
             "objective_progress": self.objective_values,
+            
         }
         
     
