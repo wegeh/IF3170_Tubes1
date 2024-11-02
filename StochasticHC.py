@@ -4,14 +4,13 @@ from Cube import Cube
 from BaseLocalSearchAlgorithm import BaseLocalSearchAlgorithm
 
 class StochasticHillClimbing(BaseLocalSearchAlgorithm):
-    def __init__(self, cube: Cube, max_iterations: int = 100):
+    def __init__(self, cube: Cube):
         super().__init__(cube)
         self.iteration_count = 0
         self.objective_values = []
         self.time_exec = 0
-        self.max_iterations = max_iterations
         self.initial_state = 0
-        self.current_score = 0
+        self.current_score = 999999
 
     def run(self):
         start_time = time.time()
@@ -20,7 +19,7 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
         self.initial_state = copy.deepcopy(self.cube)
         self.current_score = self.initial_state.evaluate_objective_function()
 
-        while (self.iteration_count < self.max_iterations):
+        while True:
             self.iteration_count += 1
             successor = self.cube.generate_random_successor()
             successor_value = successor.evaluate_objective_function()
@@ -29,15 +28,20 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
                 self.cube = successor
                 self.current_score = successor_value
                 self.objective_values.append(successor_value)
+            else:
+                end_time = time.time()
+                self.time_exec = end_time - start_time
+                print(f"Current score: {self.current_score}")
+                print(f"Successor value: {successor_value}")
+                print(f"Time execution: {self.time_exec:.8f} seconds\n\n")
+                break
 
             print(f"Count: {self.iteration_count}")
             print(f"Current_value: {self.current_score}")
-            print(f"One iteration time: {time.time() - prev}\n\n")
+            print(f"One iteration time: {(time.time() - prev):.12f}\n\n")
             prev = time.time()
 
-        end_time = time.time()
-        self.time_exec = end_time - start_time
-        print(f"Time execution: {self.time_exec:.8f} seconds\n\n")
+        self.initial_state.display_cube()
         return {
             "initial_state": self.initial_state,
             "final_state": self.cube,
