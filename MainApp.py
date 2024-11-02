@@ -4,6 +4,7 @@ from SteepestAscentHCPage import SteepestAscentHCPage
 from RandomRestartHCPage import RandomRestartHCPage
 from StochasticHCPage import StochasticHCPage
 from SidewaysMoveHCPage import SidewaysMoveHCPage
+from SimulatedAnnealingPage import SimulatedAnnealingPage
 import signal
 import os
 
@@ -24,7 +25,7 @@ class MainApp(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def create_frames(self):
-        for F in (MainPage, SteepestAscentHCPage, RandomRestartHCPage, StochasticHCPage, SidewaysMoveHCPage):
+        for F in (MainPage, SteepestAscentHCPage, RandomRestartHCPage, StochasticHCPage, SidewaysMoveHCPage, SimulatedAnnealingPage):
             page_name = F.__name__
             frame = F(parent=self, controller=self)
             self.frames[page_name] = frame
@@ -39,3 +40,4 @@ class MainApp(tk.Tk):
             if process.is_alive():
                 os.kill(process.pid, signal.SIGTERM)  
         self.destroy()
+        os._exit(1)

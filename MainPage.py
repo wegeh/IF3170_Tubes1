@@ -25,7 +25,7 @@ class MainPage(ttk.Frame):
                                 command=lambda: controller.show_frame("SidewaysMoveHCPage"))
         sideways_move_button.pack(pady=10)
 
-        sa_button = ttk.Button(self, text="Simulated Annealing (SA)", command=self.placeholder)
+        sa_button = ttk.Button(self, text="Simulated Annealing (SA)", command=lambda: controller.show_frame("SimulatedAnnealingPage"))
         sa_button.pack(pady=10)
 
         ga_button = ttk.Button(self, text="Genetic Algorithm (GA)", command=self.placeholder)

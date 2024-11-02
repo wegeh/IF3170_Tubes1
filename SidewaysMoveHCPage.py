@@ -97,7 +97,7 @@ class SidewaysMoveHCPage(ttk.Frame):
 
     def run_algorithm(self, max_sideways, result_queue):
         cube = Cube(5)
-        algorithm = HCSidewaysMove(cube, max_sideways, stop_event=self.stop_event)
+        algorithm = HCSidewaysMove(cube, max_sideways)
         result = algorithm.run()
         result_queue.put(result)
 
@@ -118,8 +118,7 @@ class SidewaysMoveHCPage(ttk.Frame):
 
             result_str = (
                 f"Final Objective Value: {result['final_objective']}\n"
-                f"Many Restart: {result['']}\n"
-                f"Many Iteration/Restart : {result['']}\n"
+                f"Iterations: {result['iterations']}\n"
                 f"Execution Time: {result['duration']:.2f} seconds\n"
             )
             self.result_text.delete(1.0, tk.END)
