@@ -356,3 +356,11 @@ class Cube:
         self.plane_diag_sums[10] = np.sum([self.cube[n-1, i, i] for i in range(n)])
         self.plane_diag_sums[11] = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])
 
+    def to_flat_list(self):
+        return self.cube.flatten().tolist()
+    
+    def from_flat_list(flat_list):
+        size = int(round(len(flat_list) ** (1/3)))
+        cube = Cube(size)
+        cube.cube = np.array(flat_list).reshape((size, size, size))
+        return cube
