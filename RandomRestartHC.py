@@ -31,6 +31,8 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
             self.cube.generate_cube()
             self.initial_state = copy.deepcopy(self.cube)
             self.current_score = self.initial_state.evaluate_objective_function()
+            self.objective_values.append(self.current_score)     
+            
             
             
             while (True):
