@@ -9,9 +9,13 @@ class MainPage(ttk.Frame):
         label = ttk.Label(self, text="Select an Algorithm", font=("Helvetica", 16))
         label.pack(pady=20)
 
-        sa_button = ttk.Button(self, text="Steepest Ascent Algorithm",
+        sahc_button = ttk.Button(self, text="Steepest Ascent Algorithm",
                                command=lambda: controller.show_frame("SteepestAscentPage"))
-        sa_button.pack(pady=10)
+        sahc_button.pack(pady=10)
+        
+        rrhc_button = tk.Button(self, text="Random Restart Hill Climbing Algorithm",
+                                command=lambda: controller.show_frame("RandomRestartHCPage"))
+        rrhc_button.pack(pady=10)
 
         sa_button = ttk.Button(self, text="Simulated Annealing (SA)", command=self.placeholder)
         sa_button.pack(pady=10)

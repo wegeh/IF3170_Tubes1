@@ -1,6 +1,7 @@
 import tkinter as tk
 from MainPage import MainPage
-from SteepestAscentPage import SteepestAscentPage
+from SteepestAscentHCPage import SteepestAscentHCPage
+from RandomRestartHCPage import RandomRestartHCPage
 import signal
 import os
 
@@ -21,7 +22,7 @@ class MainApp(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def create_frames(self):
-        for F in (MainPage, SteepestAscentPage):
+        for F in (MainPage, SteepestAscentHCPage, RandomRestartHCPage):
             page_name = F.__name__
             frame = F(parent=self, controller=self)
             self.frames[page_name] = frame

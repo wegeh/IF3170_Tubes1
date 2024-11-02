@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from CubeVisualizerVTK import CubeVisualizerVTK
 from multiprocessing import Process
 
-class SteepestAscentPage(ttk.Frame):
+class SteepestAscentHCPage(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
