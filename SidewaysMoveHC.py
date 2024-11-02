@@ -3,7 +3,7 @@ import time
 from Cube import Cube
 import copy 
 
-class SteepestAscentHC(BaseLocalSearchAlgorithm):
+class SidewaysMovetHC(BaseLocalSearchAlgorithm):
     def __init__(self, cube: Cube):
         super().__init__(cube)
         self.iteration_count = 0

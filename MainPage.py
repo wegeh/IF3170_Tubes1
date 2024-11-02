@@ -20,6 +20,10 @@ class MainPage(ttk.Frame):
         stochastic_button = tk.Button(self, text="Stochastic Hill Climbing Algorithm",
                                 command=lambda: controller.show_frame("StochasticHCPage"))
         stochastic_button.pack(pady=10)
+        
+        sideways_move_button = tk.Button(self, text="Hill Climbing With Sideways Move Algorithm",
+                                command=lambda: controller.show_frame("SidewaysMoveHCPage"))
+        sideways_move_button.pack(pady=10)
 
         sa_button = ttk.Button(self, text="Simulated Annealing (SA)", command=self.placeholder)
         sa_button.pack(pady=10)
