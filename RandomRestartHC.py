@@ -4,10 +4,13 @@ from Cube import Cube
 import copy 
 
 class RandomRestartHC(BaseLocalSearchAlgorithm):
-    def __init__(self, cube: Cube, max_restarts: int = 100):
+    def __init__(self, cube: Cube, max_restarts: int = 100, no_improvement_restarts: int = 10):
         super().__init__(cube)
         self.max_restarts = max_restarts
+        self.no_improvement_restarts = no_improvement_restarts
+        self.stagnant_restarts = 0
         self.iteration_count = 0
+        self.iteration_per_restart = []
         self.total_restarts = 0
         self.objective_values = []
         self.best_score = float('inf')
@@ -17,7 +20,11 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
     def run(self):
         start_time = time.time()
 
-        for restart in range(self.max_restarts):
+        while self.total_restarts < self.max_restarts:
+            if self.stagnant_restarts >= self.no_improvement_restarts:
+                print("Stopped due to no improvement in the last", self.no_improvement_restarts, "restarts.")
+                break;
+
             self.total_restarts += 1
             self.iteration_count = 0
             prev = time.time()
@@ -37,11 +44,16 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
                     self.current_score = successor_value
                     self.objective_values.append(successor_value)     
                 else:
-                    end_restart = time.time() - prev
+                    self.iteration_per_restart.append(self.iteration_count)
+                    end_restart = time.time() - prev                        
                     if self.current_score < self.best_score:
                         self.best_score = self.current_score
                         self.best_state = copy.deepcopy(self.cube)
+                        self.stagnant_restarts = 0 
+                    else:
+                        self.stagnant_restarts += 1
                     print("restart: ", self.total_restarts)
+                    print(self.iteration_per_restart)
                     print(end_restart)
                     print(self.best_score)
                     print()
@@ -63,6 +75,7 @@ class RandomRestartHC(BaseLocalSearchAlgorithm):
             "final_objective": self.best_score, 
             "max restart": self.max_restarts,
             "total restart": self.total_restarts,
+            "iteration per restart": self.iteration_per_restart,
             "duration": self.time_exec,
             "objective_progress": self.objective_values,
         }
