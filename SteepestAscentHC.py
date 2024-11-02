@@ -23,12 +23,13 @@ class SteepestAscentHC(BaseLocalSearchAlgorithm):
             successor = self.cube.get_best_successor()
         
             successor_value = successor.evaluate_objective_function()
-            self.objective_values.append(successor_value)     
             
             if (successor_value < self.current_score):
                 self.cube = successor
                 self.current_score = successor_value
+                self.objective_values.append(successor_value)     
             else:
+                self.objective_values.append(self.current_score)     
                 end_time = time.time()
                 self.time_exec = end_time-start_time
                 print(self.current_score)

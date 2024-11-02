@@ -3,6 +3,7 @@ import time
 from Cube import Cube
 import copy
 import random
+import numpy as np
 
 class GeneticAlgorithm(BaseLocalSearchAlgorithm):
     def __init__(self, cube: Cube, population_size, max_iterations):
@@ -15,7 +16,7 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
 
     def fitness_function(self, cube):
         objective_value = cube.evaluate_objective_function()
-        return 1 / (objective_value + 1e-5) 
+        return (1 / (objective_value + 1e-5), objective_value)
     
     def initialize_population(self):
         population = []
@@ -26,9 +27,9 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
         return population
 
     def select_parents(self, population):
-        total_fitness = sum(self.fitness_function(individu) for individu in population)
-        selection_probabilities = [self.fitness_function(individu) / total_fitness for individu in population]
-        parents = random.choices(population, weights=selection_probabilities, k=2)
+        total_fitness = np.sum([self.fitness_function(individu)[0] for individu in population])
+        selection_probabilities = [self.fitness_function(individu)[0] / total_fitness for individu in population]
+        parents = random.choices(population, weights=selection_probabilities, k=2) 
         return parents
 
     def order_crossover(self, parent1, parent2):
@@ -70,7 +71,7 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
         population = self.initialize_population()
         initial_state = copy.deepcopy(population[0])
         best_individual = initial_state
-        best_fitness = self.fitness_function(best_individual)
+        best_fitness = self.fitness_function(best_individual)[0]
 
         for iteration in range(self.max_iterations):
             new_population = []
@@ -83,8 +84,8 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
             population = new_population
 
             current_best = max(population, key=self.fitness_function)
-            current_best_fitness = self.fitness_function(current_best)
-            self.objective_values.append(1 / current_best_fitness)
+            (current_best_fitness, current_best_objective) = self.fitness_function(current_best)
+            self.objective_values.append(current_best_objective)
 
             if current_best_fitness > best_fitness:
                 best_individual = current_best

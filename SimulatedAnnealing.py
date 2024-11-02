@@ -32,7 +32,6 @@ class SimulatedAnnealing(BaseLocalSearchAlgorithm):
             
             successor = self.cube.get_random_successor()
             successor_value = successor.evaluate_objective_function()
-            self.objective_values.append(successor_value)
 
             delta_e = successor_value - self.current_score
 
@@ -40,6 +39,7 @@ class SimulatedAnnealing(BaseLocalSearchAlgorithm):
                 self.cube = successor
                 self.current_score = successor_value
                 self.probability_values.append(1)
+                self.objective_values.append(successor_value) 
             else:
                 probability = math.exp(-delta_e / self.temperature)
                 self.probability_values.append(probability)
@@ -48,6 +48,11 @@ class SimulatedAnnealing(BaseLocalSearchAlgorithm):
                 if random.uniform(0, 1) < probability:
                     self.cube = successor
                     self.current_score = successor_value
+                    self.objective_values.append(successor_value)
+                else:
+                    self.objective_values.append(self.current_score)
+                    
+                    
 
 
             if self.iteration_count % 500 == 0:

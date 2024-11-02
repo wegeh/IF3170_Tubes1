@@ -29,6 +29,7 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
                 self.current_score = successor_value
                 self.objective_values.append(successor_value)
             else:
+                self.objective_values.append(self.current_score)
                 end_time = time.time()
                 self.time_exec = end_time - start_time
                 print(f"Current score: {self.current_score}")
