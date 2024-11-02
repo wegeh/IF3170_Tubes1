@@ -211,9 +211,11 @@ class Cube:
         index_pairs = itertools.combinations(indices, 2)  
 
         for idx1, idx2 in index_pairs:
-            self.swap_and_update(idx1, idx2)
+            # self.swap_and_update(idx1, idx2)
+            self.swap(idx1, idx2)
             yield self  
-            self.swap_and_update(idx1, idx2)
+            # self.swap_and_update(idx1, idx2)
+            self.swap(idx1, idx2)
     
 
     def generate_random_successor(self):
@@ -233,10 +235,10 @@ class Cube:
         best_score = float('inf')
 
         for successor in self.generate_all_successors():
-            score = successor.evaluate_objective_function2()
-            score2 = successor.evaluate_objective_function()
-            print("score1: ", score)
-            print("score2: ", score2)
+            score = successor.evaluate_objective_function()
+            # score2 = successor.evaluate_objective_function2()
+            # print("score1: ", score)
+            # print("score2: ", score2)
             if score < best_score:
                 best_cube = copy.deepcopy(successor) 
                 best_score = score
