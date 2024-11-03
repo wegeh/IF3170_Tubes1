@@ -94,7 +94,6 @@ class Cube:
         total_diff += np.abs(plane_diag_11 - magic_number)
         total_diff += np.abs(plane_diag_12 - magic_number)
         
-        print("tes")
 
         return total_diff
 
