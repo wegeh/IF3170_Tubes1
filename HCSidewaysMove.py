@@ -27,6 +27,7 @@ class HCSidewaysMove(BaseLocalSearchAlgorithm):
             successor_value = successor.evaluate_objective_function()
             
             if (successor_value < self.current_score):
+                self.sideways_count = 0
                 self.cube = successor
                 self.current_score = successor_value
                 self.objective_values.append(successor_value)     
