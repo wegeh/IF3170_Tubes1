@@ -107,7 +107,7 @@ class GeneticAlgorithm(BaseLocalSearchAlgorithm):
             avg_objective_value = sum(obj_val[1] for _, obj_val in fitness_objective_values) / len(population)
             self.avg_objective_values.append(avg_objective_value)
 
-            if iteration % 1 == 0:  
+            if iteration % 400 == 0:  
                 print(f"Iteration {iteration}: Best Objective Value = {obj_val}")
 
         end_time = time.time()

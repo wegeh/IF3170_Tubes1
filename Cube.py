@@ -39,10 +39,7 @@ class Cube:
         row_sums = np.sum(self.cube, axis=2)  
         col_sums = np.sum(self.cube, axis=1)  
         pillar_sums = np.sum(self.cube, axis=0)  
-        # print("row: ", row_sums)
-        # print("col: ", col_sums)
-        # print("pillar: ", pillar_sums)
-        # print()
+       
 
         total_diff = np.sum(np.abs(row_sums - magic_number))
         total_diff += np.sum(np.abs(col_sums - magic_number))
@@ -52,8 +49,6 @@ class Cube:
         main_diag_2 = np.sum([self.cube[i, i, n-1-i] for i in range(n)])  
         main_diag_3 = np.sum([self.cube[i, n-1-i, i] for i in range(n)])  
         main_diag_4 = np.sum([self.cube[i, n-1-i, n-1-i] for i in range(n)]) 
-        # print("diagonal", main_diag_1, main_diag_2, main_diag_3, main_diag_4)
-        # print()
         
 
         total_diff += np.abs(main_diag_1 - magic_number)
@@ -76,10 +71,7 @@ class Cube:
         plane_diag_10 = np.sum([self.cube[0, i, n-1-i] for i in range(n)])  #tt
         plane_diag_11 = np.sum([self.cube[n-1, i, i] for i in range(n)])  
         plane_diag_12 = np.sum([self.cube[n-1, i, n-1-i] for i in range(n)])  
-        
-        # print(f"XY-plane diagonals: {plane_diag_1}, {plane_diag_2}, {plane_diag_3}, {plane_diag_4}")
-        # print(f"XZ-plane diagonals: {plane_diag_5}, {plane_diag_6}, {plane_diag_7}, {plane_diag_8}")
-        # print(f"YZ-plane diagonals: {plane_diag_9}, {plane_diag_10}, {plane_diag_11}, {plane_diag_12}")
+    
         
         total_diff += np.abs(plane_diag_1 - magic_number)
         total_diff += np.abs(plane_diag_2 - magic_number)
@@ -103,18 +95,8 @@ class Cube:
         index_pairs = itertools.combinations(indices, 2)  
 
         for idx1, idx2 in index_pairs:
-            # print("================0")
-            # self.swap_and_update(idx1, idx2)
             self.swap(idx1, idx2)
-            # print("r",self.row_sums)
-            # print("c",self.col_sums)
-            # print("p",self.pillar_sums)
-            # print("md",self.main_diag_sums)
-            # print("pd",self.plane_diag_sums)
-            # print("================1")
             yield self  
-            # print("================2")
-            # self.swap_and_update(idx1, idx2)
             self.swap(idx1, idx2)
     
 
@@ -136,9 +118,6 @@ class Cube:
 
         for successor in self.generate_all_successors():
             score = successor.evaluate_objective_function()
-            # score3 = successor.evaluate_objective_function3()
-            # print("score1: ", score)
-            # print("score3: ", score3)
             if score < best_score:
                 best_cube = copy.deepcopy(successor) 
                 best_score = score
