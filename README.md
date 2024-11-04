@@ -19,13 +19,13 @@ Program ini merupakan program untuk mencari solusi dari diagonal magic cube deng
 ```
 2. Masuk ke dalam directory folder yang telah di clone tadi
 ```bash
-   cd IF3170_Tubes1
+   cd IF3170_Tubes1/src
 ```
 3. Jalankan command berikut untuk menginstall seluruh module yang dibutuhkan untuk program ini
 ```bash
    pip install -r requirements.txt
 ```
-4. Program telah siap untuk digunakan
+4. Program telah siap untuk dijalankan
 
 ## How to Run
 1. Untuk menjalankan program, cukup masukkan command berikut dan program akan langsung berjalan
