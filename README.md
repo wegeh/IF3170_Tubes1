@@ -34,9 +34,9 @@ Program ini merupakan program untuk mencari solusi dari diagonal magic cube deng
 ```
 
 ## Pembagian Tugas
-| NIM      | Nama                    | Tugas  |
-| -------- | ----------------------- | ------ |
-| 13522111 | Ivan Hendrawan Tan      | blabla |
-| 13522113 | William Glory Henderson | blabla |
-| 13522116 | Naufal Adnan            | blabla |
-| 13522117 | Mesach Harmasendro      | blabla |
+| NIM      | Nama                    | Tugas                                                                                           |
+| -------- | ----------------------- | ----------------------------------------------------------------------------------------------- |
+| 13522111 | Ivan Hendrawan Tan      | Stochastic HC, eksperimen dan analisis, laporan                                                 |
+| 13522113 | William Glory Henderson | Genetic algorithm, simulated annealing, HC with sideways move, eksperimen dan analisis, laporan |
+| 13522116 | Naufal Adnan            | Random restart HC, eksperimen dan analisis, laporan                                             |
+| 13522117 | Mesach Harmasendro      | Steepest Ascent HC, GUI, genetic algorithm, eksperimen dan analisis, laporan                    |
