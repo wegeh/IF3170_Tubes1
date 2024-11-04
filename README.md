@@ -30,7 +30,6 @@ Program ini merupakan program untuk mencari solusi dari diagonal magic cube deng
 ## How to Run
 1. Untuk menjalankan program, cukup masukkan command berikut dan program akan langsung berjalan
 ```bash
-   cd src
    python -u main.py
 ```
 
