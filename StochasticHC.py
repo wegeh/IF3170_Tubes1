@@ -11,6 +11,7 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
         self.time_exec = 0
         self.initial_state = 0
         self.current_score = 999999
+        self.max_iterations = 10000
 
     def run(self):
         start_time = time.time()
@@ -18,10 +19,9 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
         self.cube.generate_cube()
         self.initial_state = copy.deepcopy(self.cube)
         self.current_score = self.initial_state.evaluate_objective_function()
-        self.objective_values.append(self.current_score)     
-        
+        self.objective_values.append(self.current_score)
 
-        while True:
+        while (self.iteration_count < self.max_iterations):
             self.iteration_count += 1
             successor = self.cube.generate_random_successor()
             successor_value = successor.evaluate_objective_function()
@@ -32,18 +32,17 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
                 self.objective_values.append(successor_value)
             else:
                 self.objective_values.append(self.current_score)
-                end_time = time.time()
-                self.time_exec = end_time - start_time
-                print(f"Current score: {self.current_score}")
-                print(f"Successor value: {successor_value}")
-                print(f"Time execution: {self.time_exec:.8f} seconds\n\n")
-                break
+                
+            if (self.iteration_count % 10 == 0):
+                print(f"Count: {self.iteration_count}")
+                print(f"Current_value: {self.current_score}")
+                print(f"One iteration time: {(time.time() - prev):.12f}\n\n")
+                prev = time.time()
 
-            print(f"Count: {self.iteration_count}")
-            print(f"Current_value: {self.current_score}")
-            print(f"One iteration time: {(time.time() - prev):.12f}\n\n")
-            prev = time.time()
-
+        end_time = time.time()
+        self.time_exec = end_time - start_time
+        print(f"Current score: {self.current_score}")
+        print(f"Time execution: {self.time_exec:.8f} seconds\n\n")
         self.initial_state.display_cube()
         return {
             "initial_state": self.initial_state,
