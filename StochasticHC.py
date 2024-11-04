@@ -23,7 +23,7 @@ class StochasticHillClimbing(BaseLocalSearchAlgorithm):
 
         while (self.iteration_count < self.max_iterations):
             self.iteration_count += 1
-            successor = self.cube.generate_random_successor()
+            successor = self.cube.get_random_successor()
             successor_value = successor.evaluate_objective_function()
 
             if (successor_value < self.current_score):
